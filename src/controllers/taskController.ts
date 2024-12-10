@@ -4,11 +4,10 @@ import { TaskSchemaVali } from "../models/task";
 
 class taskController {
   addTask = async (req: Request, res: Response) => {
-    const {error} = TaskSchemaVali.validate(req.body)
-
+    const { error } = TaskSchemaVali.validate(req.body);
 
     if (error) {
-      res.send(error.message)
+      res.send(error.message);
     } else {
       const task = await taskServices.createTask(req.body);
       res.status(201).send(task);
