@@ -1,9 +1,9 @@
-import task from "../models/task";
+import Task from "../models/task";
 
 export class taskService {
   async createTask(data: any) {
     try {
-      const newTask = await task.create(data);
+      const newTask = await Task.create(data);
       return newTask;
     } catch (error) {
       console.log(error);
@@ -12,7 +12,7 @@ export class taskService {
 
   async getTasks() {
     try {
-      const tasks = await task.find();
+      const tasks = await Task.find();
       return tasks;
     } catch (error) {
       console.log(error);
@@ -21,7 +21,7 @@ export class taskService {
 
   async getTask(id: string) {
     try {
-      const taskF = await task.findById(id);
+      const taskF = await Task.findById(id);
       if (!taskF) {
         return "task not found";
       }
@@ -33,7 +33,7 @@ export class taskService {
 
   async updateTask(id: string, data: any) {
     try {
-      const taskU = await task.findByIdAndUpdate(id, data, { new: true });
+      const taskU = await Task.findByIdAndUpdate(id, data, { new: true });
       if (!taskU) {
         return "task not found";
       }
@@ -45,7 +45,7 @@ export class taskService {
 
   async deleteTask(id: string) {
     try {
-      const taskD = await task.findByIdAndDelete(id);
+      const taskD = await Task.findByIdAndDelete(id);
       if (!taskD) {
         return "task not found";
       }
