@@ -1,9 +1,14 @@
 import mongoose, { Schema, Document } from "mongoose";
-import Joi from "joi";
+import Joi, { string } from "joi";
 
 export const UserSchemaVali = Joi.object({
   name: Joi.string().required(),
-  email: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
+});
+
+export const LoginSchemaVali = Joi.object({
+  email: Joi.string().email().required(),
   password: Joi.string().required(),
 });
 
@@ -17,7 +22,7 @@ const UserSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true },
-    password: { type: Boolean, required: true },
+    password: { type: String, required: true },
   },
   {
     timestamps: true, // Agrega automáticamente createdAt y updatedAt

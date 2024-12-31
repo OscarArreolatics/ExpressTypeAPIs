@@ -1,0 +1,5 @@
+DB_CONN_STRING="mongodbURL"
+DB_NAME="name"
+JWT_SECRET="secret key"
+DB_PASS="pass"
+DB_USER="user"

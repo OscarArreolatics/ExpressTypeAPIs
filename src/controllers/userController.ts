@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { userServices } from "../services/userServices";
 import { UserSchemaVali } from "../models/user";
+import User from "../models/user";
+import bcrypt from "bcryptjs";
 
 class userController {
   addUser = async (req: Request, res: Response) => {
@@ -8,16 +9,27 @@ class userController {
 
     if (error) {
       res.send(error.message);
-    } else {
-      const task = await userServices.createUser(req.body);
-      res.status(201).send(task);
+      return;
     }
-  };
 
-  login = async (req: Request, res: Response) => {
-    const id = req.params.id;
-    const task = await userServices.loginUser(id);
-    res.send(task);
+    try {
+      const { name, email, password } = req.body;
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+      });
+
+      const UserOb = newUser.toObject();
+      const { password: _, _id, ...UserRes } = UserOb;
+
+      res.status(201).send(UserRes);
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
