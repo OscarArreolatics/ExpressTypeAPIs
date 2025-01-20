@@ -36,13 +36,13 @@ class authController {
       const UserOb = user.toObject();
       const { password: _, _id, ...UserRes } = UserOb;
 
-      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
 
       res.cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Solo en HTTPS en producción
         sameSite: "strict", // Protege contra ataques CSRF
-        maxAge: 3600000, // 1 hora
+        maxAge: 43200000, // 24 horas
       });
       
       res.send({ token: token, user: UserRes });
