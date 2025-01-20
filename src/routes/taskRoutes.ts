@@ -10,6 +10,12 @@ router.post("/", taskControllers.addTask);
 // show all tasks
 router.get("/", taskControllers.getTasks);
 
+// show all tasks by project
+router.get("/project/:project", taskControllers.getTasksByProject);
+
+// show all tasks by user
+router.get("/user", authMiddleware, taskControllers.getTasksByUser);
+
 //show task
 router.get("/:id", taskControllers.getATask);
 

@@ -19,14 +19,17 @@ class taskController {
   };
 
   getTasks = async (req: Request, res: Response) => {
-/*     const userId = req.user?.id;
-    if (!userId) {
-      res.status(400).json({ error: "User ID not found." });
-      return;
-    } */
-
     try {
-      const tasks = await Task.find();
+      const tasks = await Task.find()
+        .populate({
+          path: "projectId",
+          select: "name color",
+        })
+        .populate({
+          path: "assignedTo",
+          select: "name",
+          match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        });
       res.send(tasks);
     } catch (error) {
       console.log(error);
@@ -36,11 +39,54 @@ class taskController {
   getATask = async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
-      const taskF = await Task.findById(id);
+      const taskF = await Task.findById(id)
+        .populate({
+          path: "projectId",
+          select: "name color",
+        })
+        .populate({
+          path: "assignedTo",
+          select: "name",
+          match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        });
       if (!taskF) {
         res.send("task not found");
       }
       res.send(taskF);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getTasksByUser = async (req: Request, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(400).json({ code: "NOT_FOUND", msg: "User ID not found." });
+      return;
+    }
+
+    try {
+      const taskUsr = await Task.find({ assignedTo: userId })
+        .populate({
+          path: "projectId",
+          select: "name color",
+        })
+        .populate({
+          path: "assignedTo",
+          select: "name",
+          match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        });
+      res.send(taskUsr);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  getTasksByProject = async (req: Request, res: Response) => {
+    const projectId = req.params.project;
+    try {
+      const taskP = await Task.find({ projectId: projectId });
+      res.send(taskP);
     } catch (error) {
       console.log(error);
     }
