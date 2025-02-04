@@ -6,7 +6,6 @@ export const ProjectSchemaVali = Joi.object({
   description: Joi.string().allow(null, ""),
   collaborators: Joi.array().items(Joi.string()).default([]),
   status: Joi.string().valid("activo", "pausado", "completado").default("activo"),
-  tasks: Joi.array().items(Joi.string()).default([]),
   startDate: Joi.date().required(),
   endDate: Joi.date().greater(Joi.ref("startDate")).allow(null),
   priority: Joi.string().valid("alta", "media", "baja").default("media"),
@@ -17,10 +16,9 @@ export const ProjectSchemaVali = Joi.object({
 interface IProject extends Document {
   name: string;
   description?: string;
-  createdBy: string; // ID del usuario propietario del proyecto
+  createdBy:  mongoose.Types.ObjectId; // ID del usuario propietario del proyecto
   collaborators: string[]; // Lista de IDs de usuarios que colaboran en el proyecto
   status: "activo" | "pausado" | "completado";
-  tasks: string[]; // Lista de IDs de tareas asociadas al proyecto
   startDate: Date;
   endDate?: Date;
   priority: "alta" | "media" | "baja";
@@ -39,7 +37,6 @@ const ProjectSchema = new Schema(
       enum: ["activo", "en pausa", "completado"],
       default: "activo",
     },
-    tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
     startDate: { type: Date },
     endDate: { type: Date },
     priority: {

@@ -29,7 +29,11 @@ class taskController {
           path: "assignedTo",
           select: "name",
           match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
-        });
+        })
+        .populate({
+          path: "comments.userId",
+          select: "name",
+        })
       res.send(tasks);
     } catch (error) {
       console.log(error);
@@ -48,7 +52,11 @@ class taskController {
           path: "assignedTo",
           select: "name",
           match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
-        });
+        })
+        .populate({
+          path: "comments.userId",
+          select: "name",
+        })
       if (!taskF) {
         res.send("task not found");
       }
@@ -75,6 +83,10 @@ class taskController {
           path: "assignedTo",
           select: "name",
           match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        })
+        .populate({
+          path: "comments.userId",
+          select: "name",
         });
       res.send(taskUsr);
     } catch (error) {
@@ -85,7 +97,20 @@ class taskController {
   getTasksByProject = async (req: Request, res: Response) => {
     const projectId = req.params.project;
     try {
-      const taskP = await Task.find({ projectId: projectId });
+      const taskP = await Task.find({ projectId: projectId })
+        .populate({
+          path: "projectId",
+          select: "name color",
+        })
+        .populate({
+          path: "assignedTo",
+          select: "name",
+          match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        })
+        .populate({
+          path: "comments.userId",
+          select: "name",
+        });
       res.send(taskP);
     } catch (error) {
       console.log(error);
