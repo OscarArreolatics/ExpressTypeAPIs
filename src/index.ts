@@ -32,10 +32,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/project", projectRoutes)
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, TypeScript Express!");
-});
-
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong");
