@@ -34,7 +34,7 @@ class authController {
       }
 
       const UserOb = user.toObject();
-      const { password: _, _id, ...UserRes } = UserOb;
+      const { password: _, ...UserRes } = UserOb;
 
       const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
 
