@@ -75,6 +75,11 @@ class projectController {
           },
         },
         {
+          $addFields: {
+            createdBy: { $arrayElemAt: ["$createdBy", 0] }
+          }
+        },
+        {
           $lookup: {
             from: "users", // Nombre de la colección de usuarios
             localField: "collaborators", // Campo de referencia en el proyecto
