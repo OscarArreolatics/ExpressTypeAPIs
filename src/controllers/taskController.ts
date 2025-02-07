@@ -53,10 +53,6 @@ class taskController {
           select: "name",
           match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
         })
-        .populate({
-          path: "comments.userId",
-          select: "name",
-        })
       if (!taskF) {
         res.send("task not found");
       }
