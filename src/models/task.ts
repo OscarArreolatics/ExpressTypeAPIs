@@ -36,6 +36,11 @@ export const TaskSchemaVali = Joi.object({
     .default([]),
 });
 
+export const CommentSchemaVali = Joi.object({
+  comment: Joi.string().required(),
+  createdAt: Joi.date().default(() => new Date()),
+});
+
 export interface ITask extends Document {
   title: string;
   description: string;

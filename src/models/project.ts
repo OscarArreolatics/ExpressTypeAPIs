@@ -17,7 +17,10 @@ interface IProject extends Document {
   name: string;
   description?: string;
   createdBy:  mongoose.Types.ObjectId; // ID del usuario propietario del proyecto
-  collaborators: string[]; // Lista de IDs de usuarios que colaboran en el proyecto
+  collaborators: {
+    _id: mongoose.Types.ObjectId,
+    name: string;
+  }[]; // Lista de IDs de usuarios que colaboran en el proyecto
   status: "activo" | "pausado" | "completado";
   startDate: Date;
   endDate?: Date;
