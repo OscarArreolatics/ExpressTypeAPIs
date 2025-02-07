@@ -69,6 +69,14 @@ class projectController {
         {
           $lookup: {
             from: "users", // Nombre de la colección de usuarios
+            localField: "createdBy", // Campo de referencia en el proyecto
+            foreignField: "_id", // Campo del usuario que corresponde
+            as: "createdBy", // Nombre del nuevo campo con los datos poblados
+          },
+        },
+        {
+          $lookup: {
+            from: "users", // Nombre de la colección de usuarios
             localField: "collaborators", // Campo de referencia en el proyecto
             foreignField: "_id", // Campo del usuario que corresponde
             as: "collaborators", // Nombre del nuevo campo con los datos poblados
@@ -81,6 +89,10 @@ class projectController {
             "collaborators.email": 0,
             "collaborators.createdAt": 0,
             "collaborators.updatedAt": 0,
+            "createdBy.password": 0, // Excluir campos sensibles si es necesario
+            "createdBy.email": 0,
+            "createdBy.createdAt": 0,
+            "createdBy.updatedAt": 0,
           },
         },
       ]);
@@ -120,7 +132,7 @@ class projectController {
       const isAuthorized =
         ProjectF.createdBy._id.toString() === userId ||
         ProjectF.collaborators.some(
-          (collaborator) => collaborator.toString() === userId
+          (collaborator) => collaborator._id.toString() === userId
         );
 
       if (!isAuthorized) {
