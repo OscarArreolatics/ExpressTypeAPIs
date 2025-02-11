@@ -31,6 +31,11 @@ class userController {
       console.log(error);
     }
   };
+
+  getUsers = async (req: Request, res: Response) => {
+    const users = await User.find().select("name role")
+    res.send(users);
+  };
 }
 
 export const userControllers = new userController();

@@ -5,7 +5,7 @@ import { authMiddleware } from "../middleware/auth";
 const router = Router();
 
 // show all comments of a task
-router.get("/:id", commentControllers.getComments);
+router.get("/:id", authMiddleware, commentControllers.getComments);
 
 // add comments
 router.post("/:id", authMiddleware, commentControllers.addComment);

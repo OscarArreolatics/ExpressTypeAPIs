@@ -25,7 +25,11 @@ interface IProject extends Document {
   startDate: Date;
   endDate?: Date;
   priority: "alta" | "media" | "baja";
-  tags: string[];
+  tags: {
+    _id: mongoose.Types.ObjectId,
+    name: string;
+    color: string;
+  }[];
   color: string;
 }
 
@@ -47,7 +51,7 @@ const ProjectSchema = new Schema(
       enum: ["alta", "media", "baja"],
       default: "media",
     },
-    tags: [{ type: String }],
+    tags: [{ type: Schema.Types.ObjectId, ref: "Tag" }],
     color: { type: String, default: "" },
   },
   { timestamps: true } // Esto incluye createdAt y updatedAt automáticamente

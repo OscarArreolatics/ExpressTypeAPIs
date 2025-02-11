@@ -7,6 +7,7 @@ import userRoutes from "../src/routes/userRoutes";
 import authRoutes from "../src/routes/authRoutes"
 import projectRoutes from '../src/routes/projectRoutes'
 import commentRoutes from '../src/routes/commentRoutes'
+import tagRoutes from '../src/routes/tagRoutes'
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/project", projectRoutes)
 app.use("/api/comment", commentRoutes)
+app.use("/api/tag", tagRoutes)
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);

@@ -1,28 +1,28 @@
 import { Router, Request, Response } from "express";
 import { taskControllers } from "../controllers/taskController";
-import { authMiddleware } from "../middleware/auth";
+import { authMiddleware, authRoles } from "../middleware/auth";
 
 const router = Router();
 
 // create task
-router.post("/", taskControllers.addTask);
+router.post("/", authMiddleware, taskControllers.addTask);
 
 // show all tasks
 router.get("/", taskControllers.getTasks);
 
 // show all tasks by project
-router.get("/project/:project", taskControllers.getTasksByProject);
+router.get("/project/:project", authMiddleware, taskControllers.getTasksByProject);
 
 // show all tasks by user
 router.get("/user", authMiddleware, taskControllers.getTasksByUser);
 
 //show task
-router.get("/:id", taskControllers.getATask);
+router.get("/:id", authMiddleware,taskControllers.getATask);
 
 // update task
-router.put("/:id", taskControllers.updateTask);
+router.put("/:id", authMiddleware, taskControllers.updateTask);
 
 //delete task
-router.delete("/:id", taskControllers.deleteTask);
+router.delete("/:id", authMiddleware, authRoles("admin", "editor"), taskControllers.deleteTask);
 
 export default router;

@@ -21,7 +21,7 @@ class authController {
 
     try {
       const { email, password } = req.body;
-      const user = await User.findOne({ email }).select("name email password ");
+      const user = await User.findOne({ email }).select("name email password role");
       if (!user) {
         res.send({code: "NOT_FOUND", msg:"User not found"});
         return;
@@ -36,7 +36,7 @@ class authController {
       const UserOb = user.toObject();
       const { password: _, ...UserRes } = UserOb;
 
-      const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "24h" });
+      const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: "24h" });
 
       res.cookie("token", token, {
         httpOnly: true,

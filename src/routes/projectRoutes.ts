@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
 import { projectControllers } from "../controllers/projectController";
-import { authMiddleware } from "../middleware/auth";
+import { authMiddleware, authRoles } from "../middleware/auth";
 
 const router = Router();
 
 // create project
-router.post("/", authMiddleware, projectControllers.addProject);
+router.post("/", authMiddleware, authRoles("admin", "editor"), projectControllers.addProject);
 
 // show all project by user
 router.get("/", authMiddleware, projectControllers.getProjects);
@@ -14,9 +14,9 @@ router.get("/", authMiddleware, projectControllers.getProjects);
 router.get("/:id", authMiddleware, projectControllers.getAProject);
 
 // update project
-router.put("/:id", authMiddleware, projectControllers.updateProject);
+router.put("/:id", authMiddleware, authRoles("admin", "editor", "user"), projectControllers.updateProject);
 
 //delete project
-router.delete("/:id", authMiddleware, projectControllers.deleteProject); 
+router.delete("/:id", authMiddleware, authRoles("admin", "editor", "user"), projectControllers.deleteProject); 
 
 export default router;

@@ -10,6 +10,7 @@ class taskController {
       res.send(error.message);
       return;
     }
+    
     try {
       const newTask = await Task.create(req.body);
       res.status(201).send(newTask);
@@ -118,7 +119,7 @@ class taskController {
     try {
       const taskU = await Task.findByIdAndUpdate(id, req.body, { new: true });
       if (!taskU) {
-        res.send("task not found");
+        res.send({ code: "NOT_FOUND", msg: "task not found" });
       }
       res.send(taskU);
     } catch (error) {
@@ -131,9 +132,9 @@ class taskController {
     try {
       const taskD = await Task.findByIdAndDelete(id);
       if (!taskD) {
-        res.send("task not found");
+        res.send({ code: "NOT_FOUND", msg: "task not found" });
       }
-      res.send("task delete");
+      res.send({ code: "COMPLETED", msg: "task delete" });
     } catch (error) {
       console.log(error);
     }

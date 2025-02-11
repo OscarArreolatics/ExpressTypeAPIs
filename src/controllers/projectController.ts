@@ -88,6 +88,14 @@ class projectController {
           },
         },
         {
+          $lookup: {
+            from: "tags", // Nombre de la colección de usuarios
+            localField: "tags", // Campo de referencia en el proyecto
+            foreignField: "_id", // Campo del usuario que corresponde
+            as: "tags", // Nombre del nuevo campo con los datos poblados
+          },
+        },
+        {
           $project: {
             tasks: 0, // Excluir el array de tareas si no es necesario
             "collaborators.password": 0, // Excluir campos sensibles si es necesario
@@ -127,7 +135,12 @@ class projectController {
           path: "collaborators",
           select: "name",
           match: { _id: { $ne: null } }, // Esto asegura que solo se puebla si assignedTo no es null
+        })
+        .populate({
+          path: "tags",
+          select: "title color",
         });
+
       if (!ProjectF) {
         res.send({ code: "NOT_FOUND", msg: "Project not found" });
         return;
