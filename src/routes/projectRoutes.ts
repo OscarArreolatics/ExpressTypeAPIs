@@ -14,9 +14,9 @@ router.get("/", authMiddleware, projectControllers.getProjects);
 router.get("/:id", authMiddleware, projectControllers.getAProject);
 
 // update project
-router.put("/:id", authMiddleware, authRoles("admin", "editor", "user"), projectControllers.updateProject);
+router.put("/:id", authMiddleware, authRoles("admin", "editor"), projectControllers.updateProject);
 
 //delete project
-router.delete("/:id", authMiddleware, authRoles("admin", "editor", "user"), projectControllers.deleteProject); 
+router.delete("/:id", authMiddleware, authRoles("admin", "editor"), projectControllers.deleteProject); 
 
 export default router;
