@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import tag, { TagSchemaVali } from "../models/tag";
+import project from "../models/project";
 
 class tagController {
   addTag = async (req: Request, res: Response) => {
@@ -57,6 +58,13 @@ class tagController {
       if (!tagD) {
         res.send({ code: "NOT_FOUND", msg: "tag not found" });
       }
+
+      const result = await project.updateMany(
+        { tags: { $elemMatch: { _id: id } } },
+        { $pull: { tags: { _id: id } } }
+      );
+      
+
       res.send({ code: "COMPLETED", msg: "tag delete" });
     } catch (error) {
       console.log(error);
